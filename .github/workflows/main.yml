@@ -10,12 +10,47 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test:
+
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: userapi
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        redis-version: [6]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.4.0
+      with:
+        redis-version: ${{ matrix.redis-version }}
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+  
+  deploy:
+    
+    needs: test
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
-      - uses: AkhileshNS/heroku-deploy@v3.12.12 # This is the action
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "devopsprojectjovayu" #Must be unique in Heroku
+          heroku_app_name: " devopsproject" #Must be unique in Heroku
           heroku_email: "remyj@outlook.fr"
+          appdir: userapi
+    
+  
