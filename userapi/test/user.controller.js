@@ -1,113 +1,127 @@
-const { expect } = require('chai')
-const userController = require('../src/controllers/user')
-const db = require('../src/dbClient')
+const { expect } = require("chai");
+const userController = require("../src/controllers/user");
+const db = require("../src/dbClient");
 
-describe('User', () => {
-  
+describe("User", () => {
   beforeEach(() => {
     // Clean DB before each test
-    db.flushdb()
-  })
+    db.flushdb();
+  });
 
-  describe('Create', () => {
-
-    it('create a new user', (done) => {
+  describe("Create", () => {
+    it("create a new user", (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
       userController.create(user, (err, result) => {
-        expect(err).to.be.equal(null)
-        expect(result).to.be.equal('OK')
-        done()
-      })
-    })
+        expect(err).to.be.equal(null);
+        expect(result).to.be.equal("OK");
+        done();
+      });
+    });
 
-    it('passing wrong user parameters', (done) => {
+    it("passing wrong user parameters", (done) => {
       const user = {
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
       userController.create(user, (err, result) => {
-        expect(err).to.not.be.equal(null)
-        expect(result).to.be.equal(null)
-        done()
-      })
-    })
+        expect(err).to.not.be.equal(null);
+        expect(result).to.be.equal(null);
+        done();
+      });
+    });
 
-    // it('avoid creating an existing user', (done)=> {
-    //   // TODO create this test
-    //   // Warning: the user already exists
-    //   done()
-    // })
-  
-    it('avoid creating an existing user', (done)=> {
+    it("avoid creating an existing user", (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
       // Create a user
       userController.create(user, () => {
         // Create the same user again
         userController.create(user, (err, result) => {
-          expect(err).to.not.be.equal(null)
-          expect(result).to.be.equal(null)
-          done()
-        })
-      })
-    })
+          expect(err).to.not.be.equal(null);
+          expect(result).to.be.equal(null);
+          done();
+        });
+      });
+    });
+  });
 
-
-  })
-
-  // TODO Create test for the get method
-  // describe('Get', ()=> {
-  //   
-  //   it('get a user by username', (done) => {
-  //     // 1. First, create a user to make this unit test independent from the others
-  //     // 2. Then, check if the result of the get method is correct
-  //     done()
-  //   })
-  //
-  //   it('cannot get a user when it does not exist', (done) => {
-  //     // Chech with any invalid user
-  //     done()
-  //   })
-  //
-  // })
-
-
-  describe('Get', ()=> {
-
-    it('get a user by username', (done) => {
+  describe("Get", () => {
+    it("get a user by username", (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
       // Create a user
       userController.create(user, () => {
         // Get an existing user
         userController.get(user.username, (err, result) => {
-          expect(err).to.be.equal(null)
+          expect(err).to.be.equal(null);
           expect(result).to.be.deep.equal({
-            firstname: 'Sergei',
-            lastname: 'Kudinov'
-          })
-          done()
-        })
+            firstname: "Rémy",
+            lastname: "Jovanovic",
+          });
+          done();
+        });
+      });
+    });
+
+    it("can not get a user when it does not exist", (done) => {
+      const user = {
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
+
+      userController.get(user.username, (err, result) => {
+        expect(err).to.not.be.equal(null);
+        expect(result).to.be.equal(null);
+        done();
+      });
+    });
+  });
+
+  //delete user
+  describe("Delete", () => {
+    it(
+      ("delete a user",
+      (done) => {
+        const user = {
+          username: "aymoon",
+          firstname: "Rémy",
+          lastname: "Jovanovic",
+        };
+        userController.create(user, () => {
+          userController.delete(user.username, (err, result) => {
+            expect(err).to.be.equal(null);
+            expect(result).not.to.be.equal(null);
+            userController.get(user.username, (err, result) => {
+              expect(err).to.not.be.equal(null);
+              expect(result).to.be.eql(null);
+              done();
+            });
+          });
+        });
+        it("can't delete a user that doesn't exist", (done) => {
+      const user = {
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
+          userController.get(user.username, (err, result) => {
+            expect(err).to.be.not.equal(null);
+            expect(result).to.be.equal(null);
+            done();
+          });
+        });
       })
-    })
-  
-    it('can not get a user when it does not exist', (done) => {
-      userController.get('invalid', (err, result) => {
-        expect(err).to.not.be.equal(null)
-        expect(result).to.be.equal(null)
-        done()
-      })
-    })
-  
-  })
-})
+    );
+  });
+});

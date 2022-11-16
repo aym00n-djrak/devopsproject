@@ -22,9 +22,9 @@ describe('User REST API', () => {
 
     it('create a new user', (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
       }
       chai.request(app)
         .post('/user')
@@ -42,8 +42,8 @@ describe('User REST API', () => {
     
     it('pass wrong parameters', (done) => {
       const user = {
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        firstname: "Rémy",
+        lastname: "Jovanovic",
       }
       chai.request(app)
         .post('/user')
@@ -64,10 +64,10 @@ describe('User REST API', () => {
     
     it('get an existing user', (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
-      }
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
       // Create a user
       userController.create(user, () => {
         // Get the user
@@ -99,4 +99,47 @@ describe('User REST API', () => {
         })
     })
   })
+
+  describe('Delete /user', (done) => {
+
+    it('delete a user', (done)=>{
+      const user = {
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
+      chai.request(app)
+      .post('/user/')
+      .send(user)
+      .then((res) => {
+        chai.expect(res).to.have.status(201);
+        chai.expect(res.body.status).to.equal("success");
+        chai.expect(res).to.be.json;
+        chai.request(app)
+        .delete('/user/' + user.username)
+        .then((res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res.body.status).to.equal("success");
+          chai.expect(res).to.be.json;
+          done();
+        })  
+      })
+    })
+
+    it("cannot delete a user that doesn't exist", (done)=>{
+      const user = {
+        username: "aymoon",
+        firstname: "Rémy",
+        lastname: "Jovanovic",
+      };
+      chai.request(app)
+      .delete('/user/' + user.username)
+      .then((res) => {
+        chai.expect(res).to.have.status(400);
+        chai.expect(res.body.status).to.equal("error");
+        chai.expect(res).to.be.json;
+        done();
+      })
+    })
+  });
 })

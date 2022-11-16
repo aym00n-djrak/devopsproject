@@ -34,5 +34,13 @@ module.exports = {
       else
         callback(new Error("User doesn't exists"), null)
     })
+  },
+  delete: (username, callback) => {
+    if(!username)
+      return callback(new Error("Wrong username parameter"), null);
+      db.del(username,(err,res) => {
+        if(!res) return callback(new Error("User doesn't exist"),null);
+        return callback(null,res);
+      })
   }
 }
