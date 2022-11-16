@@ -4,7 +4,7 @@ It is a basic NodeJS web application exposing REST API that creates and stores u
 
 ## Functionality
 
-1. Start a web servers
+1. Start a web server
 2. Create a user
 
 ## Installation
