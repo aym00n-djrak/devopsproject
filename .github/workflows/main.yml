@@ -29,6 +29,8 @@ jobs:
       uses: supercharge/redis-github-action@1.4.0
       with:
         redis-version: ${{ matrix.redis-version }}
+        redis-port: 6370
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
