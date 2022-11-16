@@ -54,5 +54,3 @@ jobs:
           heroku_app_name: "devopsprojectjovayu" #Must be unique in Heroku
           heroku_email: "remyj@outlook.fr"
           appdir: userapi
-    
-  
