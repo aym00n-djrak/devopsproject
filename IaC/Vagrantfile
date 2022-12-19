@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     server.vm.synced_folder "../userapi", "/home/vagrant/userapi"
     # Specify the VM specs when using the Virtualbox provisioner
     server.vm.provider "virtualbox" do |vb|
-      vb.name =  "NodeJS server"
+      vb.name =  "iac.server.local"
       # VM RAM in MB
       vb.memory = 4096
       # VM CPUs
