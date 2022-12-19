@@ -11,18 +11,20 @@ Vagrant.configure("2") do |config|
   end
 
   # Define the gitlab_server VM
-  config.vm.define "gitlab_server" do |server|
+  config.vm.define "iac" do |server|
     # Specify the Vagrant box to use
-    server.vm.box = "centos/7"
+    server.vm.box = "hashicorp/bionic64"
     # Specify the VM ip address
-    config.vm.network "forwarded_port", guest: 80, host: 8080
+    config.vm.network "forwarded_port", guest: 3000, host: 3000
+    # Create shared folders
+    server.vm.synced_folder "../userapi", "/home/vagrant/userapi"
     # Specify the VM specs when using the Virtualbox provisioner
     server.vm.provider "virtualbox" do |vb|
-      vb.name =  "gitlab.server.local"
+      vb.name =  "NodeJS server"
       # VM RAM in MB
-      vb.memory = 2048
+      vb.memory = 4096
       # VM CPUs
-      vb.cpus = 1
+      vb.cpus = 2
     end
     config.vm.provider "vmware_desktop" do |vmware|
       vmware.vmx["memsize"] = "2048"

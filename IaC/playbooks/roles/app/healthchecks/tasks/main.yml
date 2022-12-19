@@ -1,0 +1,12 @@
+# Check if redis is running
+- name: Check if redis is running
+  shell: redis-cli ping
+  register: redis_ping
+  failed_when: redis_ping.stdout != "PONG"
+  changed_when: false
+
+# check if userapi is running
+- name: Check if userapi is running
+  shell: cd /home/vagrant/userapi && npm run stop && npm run test && npm start &
+  register: userapi_test
+  failed_when: "'Error' in userapi_test.stdout"
