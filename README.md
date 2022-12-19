@@ -701,6 +701,84 @@ Il est utilisé pour visualiser les ressources du cluster Kubernetes. Pour véri
   - Déployer l'application sur le cluster Kubernetes.
   - Configurer Istio pour gérer les communications entre les microservices.
 
+## Initialisation
+
+1. Installer [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
+2. Installer un provider de Kubernetes. On utilise ici [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/).
+
+3. Installer un hyperviseur. On utilise ici [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+
+
+## Installation d'Istio
+
+
+- Il faut demarrer minikube sur l'hyperviseur VirtualBox avec le maximum de ressources possibles:
+
+```bash
+minikube start --driver=virtualbox --memory=14000 --cpus=4
+```
+
+- On verifie que tout fonctionne bien:
+
+```bash
+miniube status
+```
+
+- On initialise ensuite minikube en mode tunnel:
+
+```bash
+minikube tunnel
+```
+
+Cela permet par exemple de lancer des commandes dans le cluster Kubernetes depuis un autre terminal.
+
+Il créé une route / un tunnel entre le cluster Kubernetes et notre machine.
+
+- On installe ensuite Istio:
+
+```bash
+curl -L https://istio.io/downloadIstio | sh -
+```
+
+- On se place dans le dossier d'installation d'Istio:
+
+```bash
+cd istio-1.16.1
+```
+
+- On ajoute le chemin d'installation d'Istio dans le PATH:
+
+```bash
+export PATH=$PWD/bin:$PATH
+```
+
+- On vérifie que tout fonctionne bien:
+
+```bash
+istioctl version
+```
+
+- On installe ensuite Istio sur le cluster Kubernetes:
+
+```bash
+istioctl install --set profile=demo
+```
+
+- On vérifie que tout fonctionne bien:
+
+```bash
+kubectl get pods -n istio-system
+```
+
+## Déploiement de l'application
+
+- On garde pour tout le reste de la partie la configuration de minikube et Istio.
+
+- On se place dans le dossier istio.
+
+
+
 # Partie 8 - Implémenter un système de monitoring en utilisant Prometheus et Grafana.
 
 ## Auteurs
