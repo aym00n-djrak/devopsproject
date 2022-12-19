@@ -479,6 +479,12 @@ docker tag dockeruserapi aym00n/dockeruserapi
 docker push aym00n/dockeruserapi
 ```
 
+- On l'observe sur le site Docker: 
+
+![alt text](pictures/dockerpull.png "Docker Hub")
+
+
+
 - Pour utiliser l'image Docker Hub, il faut taper la commande suivante:
 
 ```bash
@@ -568,8 +574,8 @@ Pour pouvoir utiliser Kubernetes, il faut installer les outils suivants:
 
 ## Auteurs
 
-- Rémy JOVANOVIC E-mail:remy.jovanovic@edu.ece.fr
-- Shihao YU E-mail:shihao.yu@edu.ece.fr
+- Rémy JOVANOVIC E-mail: remy.jovanovic@edu.ece.fr
+- Shihao YU E-mail: shihao.yu@edu.ece.fr
 
 
 ````
