@@ -1,10 +1,11 @@
 version: "3"
 services:
-  redis:
+  redis-server:
     image: redis
 
-  web:
-    
+  userapi:
+    depends_on:
+      - redis-server
     build: .
     ports:
       - "3001:3001"

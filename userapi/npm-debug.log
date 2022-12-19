@@ -1,0 +1,80 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install' ]
+2 info using npm@3.5.2
+3 info using node@v8.10.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchNamedPackageData fsevents
+20 silly mapToRegistry name fsevents
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/fsevents
+24 verbose request uri https://registry.npmjs.org/fsevents
+25 verbose request no auth needed
+26 info attempt registry request try #1 at 7:17:40 PM
+27 verbose request id d8b1f53a1f801775
+28 http request GET https://registry.npmjs.org/fsevents
+29 http 200 https://registry.npmjs.org/fsevents
+30 verbose headers { date: 'Mon, 19 Dec 2022 19:17:45 GMT',
+30 verbose headers   'content-type': 'application/json',
+30 verbose headers   'transfer-encoding': 'chunked',
+30 verbose headers   connection: 'keep-alive',
+30 verbose headers   'cf-ray': '77c27aecc830f0af-CDG',
+30 verbose headers   'access-control-allow-origin': '*',
+30 verbose headers   age: '151',
+30 verbose headers   'cache-control': 'public, max-age=300',
+30 verbose headers   etag: 'W/"f70d5ce84deac79ac7961b61b00c57e7"',
+30 verbose headers   'last-modified': 'Sat, 18 Jun 2022 03:58:00 GMT',
+30 verbose headers   vary: 'accept-encoding, accept',
+30 verbose headers   'cf-cache-status': 'HIT',
+30 verbose headers   'x-amz-replication-status': 'COMPLETED',
+30 verbose headers   server: 'cloudflare',
+30 verbose headers   'content-encoding': 'gzip' }
+31 silly get cb [ 200,
+31 silly get   { date: 'Mon, 19 Dec 2022 19:17:45 GMT',
+31 silly get     'content-type': 'application/json',
+31 silly get     'transfer-encoding': 'chunked',
+31 silly get     connection: 'keep-alive',
+31 silly get     'cf-ray': '77c27aecc830f0af-CDG',
+31 silly get     'access-control-allow-origin': '*',
+31 silly get     age: '151',
+31 silly get     'cache-control': 'public, max-age=300',
+31 silly get     etag: 'W/"f70d5ce84deac79ac7961b61b00c57e7"',
+31 silly get     'last-modified': 'Sat, 18 Jun 2022 03:58:00 GMT',
+31 silly get     vary: 'accept-encoding, accept',
+31 silly get     'cf-cache-status': 'HIT',
+31 silly get     'x-amz-replication-status': 'COMPLETED',
+31 silly get     server: 'cloudflare',
+31 silly get     'content-encoding': 'gzip' } ]
+32 verbose get saving fsevents to /root/.npm/registry.npmjs.org/fsevents/.cache.json
+33 verbose makeDirectory /root/.npm creation not in flight; initializing
+34 silly makeDirectory /root/.npm uid: 1000 gid: 1000
+35 silly resolveWithNewModule fsevents@2.3.2 checking installable status
+36 verbose stack Error: write EPIPE
+36 verbose stack     at _errnoException (util.js:1022:11)
+36 verbose stack     at WriteWrap.afterWrite [as oncomplete] (net.js:880:14)
+37 verbose cwd /home/vagrant/userapi
+38 error Linux 4.15.0-58-generic
+39 error argv "/usr/bin/node" "/usr/bin/npm" "install"
+40 error node v8.10.0
+41 error npm  v3.5.2
+42 error code EPIPE
+43 error errno EPIPE
+44 error syscall write
+45 error write EPIPE
+46 error If you need help, you may report this error at:
+46 error     <https://github.com/npm/npm/issues>
+47 verbose exit [ 1, true ]

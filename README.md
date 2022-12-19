@@ -402,7 +402,7 @@ Ce qui nous donne:
 ansible-playbook /vagrant/playbooks/run.yml --tags TAG -i /tmp/vagrant-ansible/inventory/vagrant_ansible_local_inventory
 ```
 
-- TAG est le nom du tag que l'on veut tester. 
+- TAG est le nom du tag que l'on veut tester.
 
 - Donc dans notre cas : check
 
@@ -412,11 +412,10 @@ ansible-playbook /vagrant/playbooks/run.yml --tags check -i /tmp/vagrant-ansible
 
 - On peut voir que le système est en bon état:
 
-    ![alt text](pictures/IAC.png "Ansible")
+  ![alt text](pictures/IAC.png "Ansible")
 
 # Partie 4 - Construire une Image Docker de l'application.
 
- 
 ## Prérequis
 
 Pour pouvoir utiliser Docker, il faut installer les outils suivants:
@@ -449,13 +448,26 @@ cd docker_userapi
 docker build -t dockeruserapi .
 ```
 
+- sortie de la commande:
+
+![alt text](pictures/dockerbuild.png "Docker build")
+
 - Pour lancer l'application, il faut taper la commande suivante:
 
 ```bash
 docker run -p 3001:3001 dockeruserapi
 ```
 
+- sortie de la commande:
+
+![alt text](pictures/dockerrun.png "Docker start")
+
 - L'application est maintenant disponible sur le port 3001 : [http://localhost:3001](http://localhost:3001)
+
+
+- Sur l'adresse :
+
+ ![alt text](pictures/localhostdocker.png "localhost")
 
 ## Utilisation de l'image Docker Hub
 
@@ -499,7 +511,6 @@ docker run -p 3001:3001 aym00n/dockeruserapi
 
 - L'application est maintenant disponible sur le port 3001 : [http://localhost:3001](http://localhost:3001)
 
-
 On peut la tester avec la méthode CURL que pour IaC.
 
 # Partie 5 - Créer l'orchestration d'un conteneur en utilisant Docker Compose.
@@ -511,7 +522,6 @@ Pour pouvoir utiliser Docker Compose, il faut installer les outils suivants:
 - [Docker](https://docs.docker.com/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Redis](https://redis.io/download)
-
 
 ## Installation
 
@@ -532,7 +542,13 @@ cd dockercompose_userapi
 docker-compose up
 ```
 
+- sortie de la commande:
+
+![alt text](pictures/dockercompose.png "Docker compose up")
+
 - L'application est maintenant disponible sur le port 3001 : [http://localhost:3001](http://localhost:3001)
+
+ ![alt text](pictures/localhostdockercompose.png "localhost")
 
 - Pour arrêter l'application, il faut taper la commande suivante:
 
@@ -541,19 +557,19 @@ docker-compose down
 ```
 
 - On peut la tester avec la méthode CURL suivante :
-    
-    ```bash
-    curl --header "Content-Type: application/json" \
-      --request POST \
-      --data '{"username":"Aym00n","firstname":"Remy","lastname":"Jovanovic"}' \
-      http://localhost:3001/user
-    ```
+
+  ```bash
+  curl --header "Content-Type: application/json" \
+    --request POST \
+    --data '{"username":"Aym00n","firstname":"Remy","lastname":"Jovanovic"}' \
+    http://localhost:3001/user
+  ```
 
 - La réponse est la suivante :
 
-    ```bash
-    {"status": "success", "msg": "OK"}
-    ```
+  ```bash
+  {"status": "success", "msg": "OK"}
+  ```
 
 # Partie 6 - Faire l'orchestration Docker en utilisant Kubernetes.
 
@@ -561,21 +577,117 @@ docker-compose down
 
 Pour pouvoir utiliser Kubernetes, il faut installer les outils suivants:
 
-- [Docker](https://docs.docker.com/install/)
 - [Kubernetes](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 - [Redis](https://redis.io/download)
+- Hyperviseur : [VirtualBox](https://www.virtualbox.org/wiki/Downloads) , [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v), [Docker](https://docs.docker.com/install/) etc
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
+## Installation
+
+- Pour mettre en place un cluster Kubernetes, il faut installer Minikube. Pour cela, il faut suivre les instructions sur le site officiel.
+
+- Pour lancer miniKube, il faut taper la commande suivante:
+
+```bash
+minikube start
+```
+
+- Cela va créer un cluster Kubernetes avec un noeud.
+
+- Ici on utilise le driver VirtualBox. En amont de la partie 7 et 8.
+
+- Le rendu est le suivant:
+
+![alt text](pictures/minikubestart.png "minikube start")
 
 
+- Pour verifier que le cluster est bien lancé, il faut taper la commande suivante:
+
+```bash
+kubectl get nodes
+```
+
+- Le rendu est le suivant:
+
+![alt text](pictures/minikubegetnodes.png "kubectl get nodes")
+
+- Diriger vous dans le dossier k8s du dossier cloné.
+
+- On va créer des images grâce à Dockerfile et les déployer sur le cluster Kubernetes.
+
+- On rend l'image disponible sur le cluster Kubernetes avant toute chose:
+
+```bash
+eval $(minikube docker-env)
+```
+
+- Pour créer l'image et lancer l'application, il faut se placer dans le dossier de l'application et taper la commande suivante:
+
+```bash
+docker build -t k8suserapi .
+```
+
+- On peut ensuite déployer l'application sur le cluster Kubernetes et appliquer les fichiers yaml:
+
+```bash
+cd yamlfiles
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f persistentvolume.yaml
+kubectl apply -f persistentvolumeclaim.yaml
+```
+
+- On peut vérifier que l'application est bien déployée sur le cluster Kubernetes:
+
+```bash
+kubectl get pods
+kubectl get deployments
+kubectl get services
+kubectl get pv
+kubectl get pvc
+```
+
+- On peut ouvrir les ports sur le navigateur avec la fonction
+
+```bash
+minikube service userapi-service --url
+```
+
+On obtient l'adresse sur laquelle l'application est disponible.
+
+- Pour ensuite rediriger l'application sur le port 3001, il faut taper la commande suivante:
+
+```bash
+kubectl port-forward service/userapi-deployment 3001:3001
+```
+
+- Dashboard Kubernetes:
+
+```bash
+minikube dashboard
+```
+
+- Le rendu est le suivant:
+
+![alt text](pictures/minikubedashboard.png "minikube dashboard")
+
+
+Il est utilisé pour visualiser les ressources du cluster Kubernetes. Pour vérifier que tout fonctionne bien.
 
 # Partie 7 - Créer un service mesh en utilisant Istio.
+
+- Istio est un service mesh qui permet de gérer les communications entre les microservices.
+
+- Pour utiliser Istio, il faut réaliser différentes étapes:
+
+  - Installer Istio sur le cluster Kubernetes.
+  - Déployer l'application sur le cluster Kubernetes.
+  - Configurer Istio pour gérer les communications entre les microservices.
 
 # Partie 8 - Implémenter un système de monitoring en utilisant Prometheus et Grafana.
 
 ## Auteurs
 
-- Rémy JOVANOVIC E-mail: remy.jovanovic@edu.ece.fr
-- Shihao YU E-mail: shihao.yu@edu.ece.fr
-
-
-````
+- Shihao YU E-mail:shihao.yu@edu.ece.fr
+- Rémy JOVANOVIC E-mail:remy.jovanovic@edu.ece.fr
