@@ -625,7 +625,15 @@ eval $(minikube docker-env)
 - Pour créer l'image et lancer l'application, il faut se placer dans le dossier de l'application et taper la commande suivante:
 
 ```bash
-docker build -t k8suserapi .
+docker build -t userapi-node .
+```
+
+- On verifie que l'image est bien créée:
+
+```bash
+minikube ssh
+docker images
+exit
 ```
 
 - On peut ensuite déployer l'application sur le cluster Kubernetes et appliquer les fichiers yaml:
@@ -656,11 +664,19 @@ minikube service userapi-service --url
 
 On obtient l'adresse sur laquelle l'application est disponible.
 
+Par exemple, ici l'adresse disponible est : [http://127.0.0.1:34785](http://127.0.0.1:34785), le port change souvent il faut faire attention !
+
+ ![alt text](pictures/minikubelocal.png "minikube service")
+
 - Pour ensuite rediriger l'application sur le port 3001, il faut taper la commande suivante:
 
 ```bash
-kubectl port-forward service/userapi-deployment 3001:3001
+kubectl port-forward service/userapi-service 3001:3001
 ```
+
+-Resultat:
+
+![alt text](pictures/minikubeforward.png "kubectl port-forward")
 
 - Dashboard Kubernetes:
 
