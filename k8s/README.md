@@ -1,68 +1,119 @@
-# User API web application
+# Partie 6 - Faire l'orchestration Docker en utilisant Kubernetes.
 
-It is a basic NodeJS web application exposing REST API that creates and stores user parameters in [Redis database](https://redis.io/).
+## Prérequis
 
-## Functionality
+Pour pouvoir utiliser Kubernetes, il faut installer les outils suivants:
 
-1. Start a web server
-2. Create a user
+- [Kubernetes](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+- [Redis](https://redis.io/download)
+- Hyperviseur : [VirtualBox](https://www.virtualbox.org/wiki/Downloads) , [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v), [Docker](https://docs.docker.com/install/) etc
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 ## Installation
 
-This application is written on NodeJS and it uses Redis database.
+- Pour mettre en place un cluster Kubernetes, il faut installer Minikube. Pour cela, il faut suivre les instructions sur le site officiel.
 
-1. [Install NodeJS](https://nodejs.org/en/download/)
-
-2. [Install Redis](https://redis.io/download)
-
-3. Install application
-
-Go to the root directory of the application (where `package.json` file located) and run:
-
-```
-npm install 
-```
-
-## Usage
-
-1. Start a web server
-
-From the root directory of the project run:
-
-```
-npm start
-```
-
-It will start a web server available in your browser at http://localhost:3000.
-
-2. Create a user
-
-Send a POST (REST protocol) request using terminal:
+- Pour lancer miniKube, il faut taper la commande suivante:
 
 ```bash
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"username":"sergkudinov","firstname":"sergei","lastname":"kudinov"}' \
-  http://localhost:3000/user
+minikube start
 ```
 
-It will output:
+- Cela va créer un cluster Kubernetes avec un noeud.
 
+- Ici on utilise le driver VirtualBox. En amont de la partie 7 et 8.
+
+- Le rendu est le suivant:
+
+![alt text](../pictures/minikubestart.png "minikube start")
+
+
+- Pour verifier que le cluster est bien lancé, il faut taper la commande suivante:
+
+```bash
+kubectl get nodes
 ```
-{"status":"success","msg":"OK"}
+
+- Le rendu est le suivant:
+
+![alt text](../pictures/minikubegetnodes.png "kubectl get nodes")
+
+- Diriger vous dans le dossier k8s du dossier cloné.
+
+- On va créer des images grâce à Dockerfile et les déployer sur le cluster Kubernetes.
+
+- On rend l'image disponible sur le cluster Kubernetes avant toute chose:
+
+```bash
+eval $(minikube docker-env)
 ```
 
-Another way to test your REST API is to use [Postman](https://www.postman.com/).
+- Pour créer l'image et lancer l'application, il faut se placer dans le dossier de l'application et taper la commande suivante:
 
-## Testing
-
-From the root directory of the project, run:
-
-```
-npm test
+```bash
+docker build -t userapi-node .
 ```
 
-## Author
+- On verifie que l'image est bien créée:
 
-Sergei Kudinov   
-sergei@adaltas.com
+```bash
+minikube ssh
+docker images
+exit
+```
+
+- On peut ensuite déployer l'application sur le cluster Kubernetes et appliquer les fichiers yaml:
+
+```bash
+cd yamlfiles
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f persistentvolume.yaml
+kubectl apply -f persistentvolumeclaim.yaml
+```
+
+- On peut vérifier que l'application est bien déployée sur le cluster Kubernetes:
+
+```bash
+kubectl get pods
+kubectl get deployments
+kubectl get services
+kubectl get pv
+kubectl get pvc
+```
+
+- On peut ouvrir les ports sur le navigateur avec la fonction
+
+```bash
+minikube service userapi-service --url
+```
+
+On obtient l'adresse sur laquelle l'application est disponible.
+
+Par exemple, ici l'adresse disponible est : [http://127.0.0.1:34785](http://127.0.0.1:34785), le port change souvent il faut faire attention !
+
+ ![alt text](../pictures/minikubelocal.png "minikube service")
+
+- Pour ensuite rediriger l'application sur le port 3001, il faut taper la commande suivante:
+
+```bash
+kubectl port-forward service/userapi-service 3001:3001
+```
+
+-Resultat:
+
+![alt text](../pictures/minikubeforward.png "kubectl port-forward")
+
+- Dashboard Kubernetes:
+
+```bash
+minikube dashboard
+```
+
+- Le rendu est le suivant:
+
+![alt text](../pictures/minikubedashboard.png "minikube dashboard")
+
+
+Il est utilisé pour visualiser les ressources du cluster Kubernetes. Pour vérifier que tout fonctionne bien.

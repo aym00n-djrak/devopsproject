@@ -1,68 +1,58 @@
-# User API web application
 
-It is a basic NodeJS web application exposing REST API that creates and stores user parameters in [Redis database](https://redis.io/).
+# Partie 5 - Créer l'orchestration d'un conteneur en utilisant Docker Compose.
 
-## Functionality
+## Prérequis
 
-1. Start a web server
-2. Create a user
+Pour pouvoir utiliser Docker Compose, il faut installer les outils suivants:
+
+- [Docker](https://docs.docker.com/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Redis](https://redis.io/download)
 
 ## Installation
 
-This application is written on NodeJS and it uses Redis database.
+- Pour installer Docker, il faut suivre les instructions sur le site officiel.
 
-1. [Install NodeJS](https://nodejs.org/en/download/)
+- Pour installer Docker Compose, il faut suivre les instructions sur le site officiel.
 
-2. [Install Redis](https://redis.io/download)
+- Pour installer Redis, il faut suivre les instructions sur le site officiel.
 
-3. Install application
+## Utilisation
 
-Go to the root directory of the application (where `package.json` file located) and run:
+- Pour utiliser Docker Compose, il faut créer un fichier docker-compose.yml. Dans ce fichier, on peut définir les instructions pour construire l'image et lancer l'application.
 
-```
-npm install 
-```
-
-## Usage
-
-1. Start a web server
-
-From the root directory of the project run:
-
-```
-npm start
-```
-
-It will start a web server available in your browser at http://localhost:3000.
-
-2. Create a user
-
-Send a POST (REST protocol) request using terminal:
+- Pour créer l'image et lancer l'application, il faut se placer dans le dossier de l'application et taper la commande suivante:
 
 ```bash
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"username":"sergkudinov","firstname":"sergei","lastname":"kudinov"}' \
-  http://localhost:3000/user
+cd dockercompose_userapi
+docker-compose up
 ```
 
-It will output:
+- sortie de la commande:
 
-```
-{"status":"success","msg":"OK"}
-```
+![alt text](../pictures/dockercompose.png "Docker compose up")
 
-Another way to test your REST API is to use [Postman](https://www.postman.com/).
+- L'application est maintenant disponible sur le port 3001 : [http://localhost:3001](http://localhost:3001)
 
-## Testing
+ ![alt text](../pictures/localhostdockercompose.png "localhost")
 
-From the root directory of the project, run:
+- Pour arrêter l'application, il faut taper la commande suivante:
 
-```
-npm test
+```bash
+docker-compose down
 ```
 
-## Author
+- On peut la tester avec la méthode CURL suivante :
 
-Sergei Kudinov   
-sergei@adaltas.com
+  ```bash
+  curl --header "Content-Type: application/json" \
+    --request POST \
+    --data '{"username":"Aym00n","firstname":"Remy","lastname":"Jovanovic"}' \
+    http://localhost:3001/user
+  ```
+
+- La réponse est la suivante :
+
+  ```bash
+  {"status": "success", "msg": "OK"}
+  ```

@@ -1,68 +1,98 @@
-# User API web application
+# Partie 4 - Construire une Image Docker de l'application.
 
-It is a basic NodeJS web application exposing REST API that creates and stores user parameters in [Redis database](https://redis.io/).
+## Prérequis
 
-## Functionality
+Pour pouvoir utiliser Docker, il faut installer les outils suivants:
 
-1. Start a web server
-2. Create a user
+- Docker [https://docs.docker.com/install/](https://docs.docker.com/install/)
+- Redis [https://redis.io/download](https://redis.io/download)
 
 ## Installation
 
-This application is written on NodeJS and it uses Redis database.
+- Pour installer Docker, il faut suivre les instructions sur le site officiel.
 
-1. [Install NodeJS](https://nodejs.org/en/download/)
+- Pour installer Redis, il faut suivre les instructions sur le site officiel.
 
-2. [Install Redis](https://redis.io/download)
+## Utilisation
 
-3. Install application
-
-Go to the root directory of the application (where `package.json` file located) and run:
-
-```
-npm install 
-```
-
-## Usage
-
-1. Start a web server
-
-From the root directory of the project run:
-
-```
-npm start
-```
-
-It will start a web server available in your browser at http://localhost:3000.
-
-2. Create a user
-
-Send a POST (REST protocol) request using terminal:
+1. Lancer redis dans un premier temps:
 
 ```bash
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"username":"sergkudinov","firstname":"sergei","lastname":"kudinov"}' \
-  http://localhost:3000/user
+redis-server
 ```
 
-It will output:
+2. Lancer l'application avec docker:
 
-```
-{"status":"success","msg":"OK"}
-```
+- Pour utiliser Docker, il faut créer un fichier Dockerfile. Dans ce fichier, on peut définir les instructions pour construire l'image.
 
-Another way to test your REST API is to use [Postman](https://www.postman.com/).
+- Pour créer l'image (notre image dockeruserapi), il faut se placer dans le dossier de l'application et taper la commande suivante:
 
-## Testing
-
-From the root directory of the project, run:
-
-```
-npm test
+```bash
+cd docker_userapi
+docker build -t dockeruserapi .
 ```
 
-## Author
+- sortie de la commande:
 
-Sergei Kudinov   
-sergei@adaltas.com
+![alt text](../pictures/dockerbuild.png "Docker build")
+
+- Pour lancer l'application, il faut taper la commande suivante:
+
+```bash
+docker run -p 3001:3001 dockeruserapi
+```
+
+- sortie de la commande:
+
+![alt text](../pictures/dockerrun.png "Docker start")
+
+- L'application est maintenant disponible sur le port 3001 : [http://localhost:3001](http://localhost:3001)
+
+
+- Sur l'adresse :
+
+ ![alt text](../pictures/localhostdocker.png "localhost")
+
+## Utilisation de l'image Docker Hub
+
+- Pour envoyer l'image sur Docker Hub, il faut se connecter à son compte Docker Hub.
+
+- Puis taper la commande suivante:
+
+```bash
+docker login
+```
+
+- Ensuite, il faut tagger l'image avec le nom de l'utilisateur Docker Hub:
+
+```bash
+docker tag dockeruserapi aym00n/dockeruserapi
+```
+
+- Enfin, il faut envoyer l'image sur Docker Hub:
+
+```bash
+docker push aym00n/dockeruserapi
+```
+
+- On l'observe sur le site Docker: 
+
+![alt text](../pictures/dockerpull.png "Docker Hub")
+
+
+
+- Pour utiliser l'image Docker Hub, il faut taper la commande suivante:
+
+```bash
+docker pull aym00n/dockeruserapi
+```
+
+- Puis lancer l'application avec docker:
+
+```bash
+docker run -p 3001:3001 aym00n/dockeruserapi
+```
+
+- L'application est maintenant disponible sur le port 3001 : [http://localhost:3001](http://localhost:3001)
+
+On peut la tester avec la méthode CURL que pour IaC.

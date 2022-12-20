@@ -1,68 +1,80 @@
-# User API web application
+# Partie 1 - Créer une application Web.
 
-It is a basic NodeJS web application exposing REST API that creates and stores user parameters in [Redis database](https://redis.io/).
+## Prérequis
 
-## Functionality
-
-1. Start a web server
-2. Create a user
+- NodeJS
+- Git
+- Redis
 
 ## Installation
 
-This application is written on NodeJS and it uses Redis database.
+1. Cloner le projet
 
-1. [Install NodeJS](https://nodejs.org/en/download/)
-
-2. [Install Redis](https://redis.io/download)
-
-3. Install application
-
-Go to the root directory of the application (where `package.json` file located) and run:
-
-```
-npm install 
+```bash
+git clone git@github.com:aym00n-djrak/devopsproject.git
 ```
 
-## Usage
+3. Se déplacer dans le dossier du projet
 
-1. Start a web server
-
-From the root directory of the project run:
-
+```bash
+cd devopsproject
 ```
+
+4. Puis dans l'api: userapi
+
+```bash
+cd userapi
+```
+
+5. Installer les dépendances
+
+```bash
+npm install
+```
+
+6. Lancer Redis
+
+```bash
+redis-server
+```
+
+- Résultat attendu:
+
+  ![alt text](../pictures/redis.png "Redis")
+
+6. Lancer les tests
+
+```bash
+npm test
+```
+
+- Résultat attendu:
+
+  ![alt text](../pictures/userapitest.png "Test")
+
+7. Lancer l'application finale
+
+```bash
 npm start
 ```
 
-It will start a web server available in your browser at http://localhost:3000.
+- Résultat attendu:
 
-2. Create a user
+  ![alt text](../pictures/userapistart.png "Userapi")
 
-Send a POST (REST protocol) request using terminal:
+- Sortie sur le navigateur: [localhost:3000](http://localhost:3000)
+
+  ![alt text](../pictures/userapilocalhost.png "Userapi")
+
+- On peut effectuer une commande curl pour observer si la base de données Redis est bien remplie:
 
 ```bash
 curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"username":"sergkudinov","firstname":"sergei","lastname":"kudinov"}' \
+  --data '{"username":"Aym00n","firstname":"Remy","lastname":"Jovanovic"}' \
   http://localhost:3000/user
 ```
 
-It will output:
+- Sortie sur le terminal:
 
-```
-{"status":"success","msg":"OK"}
-```
-
-Another way to test your REST API is to use [Postman](https://www.postman.com/).
-
-## Testing
-
-From the root directory of the project, run:
-
-```
-npm test
-```
-
-## Author
-
-Sergei Kudinov   
-sergei@adaltas.com
+  ![alt text](../pictures/userapicurl.png "Userapi")
