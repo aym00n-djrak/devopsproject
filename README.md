@@ -722,7 +722,7 @@ minikube start --driver=virtualbox --memory=14000 --cpus=4
 - On verifie que tout fonctionne bien:
 
 ```bash
-miniube status
+minikube status
 ```
 
 - On initialise ensuite minikube en mode tunnel:
@@ -765,11 +765,26 @@ istioctl version
 istioctl install --set profile=demo
 ```
 
+-résultat:
+
+![alt text](pictures/istioinit.png "istioctl install")
+
+
 - On vérifie que tout fonctionne bien:
 
 ```bash
 kubectl get pods -n istio-system
 ```
+
+Sortie:
+
+```bash
+NAME                                    READY   STATUS    RESTARTS   AGE
+istio-egressgateway-79598956cf-8wbvz    1/1     Running   0          104s
+istio-ingressgateway-854c9d9c5f-kcz2b   1/1     Running   0          104s
+istiod-fd94754fb-x47zd                  1/1     Running   0          2m2s
+```
+
 
 ## Déploiement de l'application
 
@@ -777,6 +792,12 @@ kubectl get pods -n istio-system
 
 - On se place dans le dossier istio.
 
+- Avec minikube, on charge les fichiers yaml de l'application:
+
+```bash
+cd yamlfiles
+kubectl apply -f deployment.yaml
+```
 
 
 # Partie 8 - Implémenter un système de monitoring en utilisant Prometheus et Grafana.

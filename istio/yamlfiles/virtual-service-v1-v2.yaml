@@ -1,0 +1,31 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Service
+metadata:
+  name: redis-service
+  labels:
+    app: redis
+spec:
+  hosts:
+    - redis-service
+  http:
+    - route:
+        - destination:
+            host: redis-service
+            port:
+              number: 6379
+            subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Service
+metadata:
+  name: userapi-service
+spec:
+  hosts:
+    - userapi-service
+  http:
+    - route:
+        - destination:
+            host: userapi-service
+            subset: v1
+            port:
+              number: 3001
