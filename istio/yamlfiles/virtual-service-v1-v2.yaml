@@ -1,31 +1,26 @@
 apiVersion: networking.istio.io/v1alpha3
-kind: Service
+kind: VirtualService
 metadata:
-  name: redis-service
-  labels:
-    app: redis
+  name: userapi-virtual-service
 spec:
   hosts:
-    - redis-service
+  - "*"
+  gateways:
+  - userapi-gateway
   http:
-    - route:
-        - destination:
-            host: redis-service
-            port:
-              number: 6379
-            subset: v1
----
-apiVersion: networking.istio.io/v1alpha3
-kind: Service
-metadata:
-  name: userapi-service
-spec:
-  hosts:
-    - userapi-service
-  http:
-    - route:
-        - destination:
-            host: userapi-service
-            subset: v1
-            port:
-              number: 3001
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: userapi-service
+        subset: v1
+        port:
+          number: 3001
+      weight: 50
+    - destination:
+        host: userapi-service
+        subset: v2
+        port:
+          number: 3001
+      weight: 50
