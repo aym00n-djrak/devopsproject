@@ -1006,6 +1006,22 @@ minikube service grafana-np --url
 
 - On peut ensuite créer des alertes et des statistiques sur les requêtes envoyées à userapi.
 
+## Auto évalutation
+
+| Subject                                                         |   Code    | Max. grade| My Grade  |
+|:----------------------------------------------------------------|:---------:|:---------:|:---------:|
+| Enriched web application with automated tests                   |   APP     |    +1     |    +1     |
+| Continuous Integration and Continuous Delivery (and Deployment) |   CICD    |    +3     |    +2     |
+| Containerisation with Docker                                    |   D       |    +1     |    +1     |
+| Orchestration with Docker Compose                               |   DC      |    +2     |    +2     |
+| Orchestration with Kubernetes	                                  |   KUB     |    +3     |    +3     |
+| Service mesh using Istio                                        |   IST     |    +2     |    +2     |
+| Infrastructure as code using Ansible                            |   IAC     |    +3     |    +3     |
+| Monitoring                                                      |   MON     |    +2     |    +1     |
+| Accurate project documentation in README.md file                |   DOC     |    +3     |    +3     |
+| Each bonus task                                                 |   BNS     |    +1     |    +0     |
+| **Total**                                                       |   TOT     |    20     |    18     |
+
 ## Auteurs
 
 - Shihao YU E-mail:shihao.yu@edu.ece.fr
