@@ -1024,5 +1024,5 @@ minikube service grafana-np --url
 
 ## Auteurs
 
-- Shihao YU E-mail:shihao.yu@edu.ece.fr
-- Rémy JOVANOVIC E-mail:remy.jovanovic@edu.ece.fr
+- Shihao YU shihao.yu@edu.ece.fr
+- Rémy JOVANOVIC remy.jovanovic@edu.ece.fr
